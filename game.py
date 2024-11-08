@@ -14,9 +14,7 @@ def run_game(debug):
     try:
         gameHandler.start()
     except KeyboardInterrupt:
-        #gameHandler.clear()
-        #gameHandler.updateScreen()
-        print("interrupted")
+        gameHandler.clear_screen()
 
 # Main program logic follows:
 if __name__ == '__main__':

@@ -1,12 +1,11 @@
 from Shape import Shape
 
 class Node:
-    _occupied = False
-    _shape = None
-    _x = 0
-    _y = 0
     
     def __init__(self, x, y):
+        self._occupied = False
+        self._shape = None
+        self._shadow = False
         self._x = x
         self._y = y
 
@@ -25,7 +24,10 @@ class Node:
             if not shadow:
                 self._occupied = True
                 self._shape = shape
+                self._shadow = False
             else:
+                self._shape = shape
+                self._shadow = True
                 self._occupied = False
         else:
             self._occupied = False
@@ -36,6 +38,9 @@ class Node:
             return None
         else:
             return self._shape
+        
+    def get_shadow(self):
+        return self._shadow
 
     def equals(self, node1, node2):
         return node1.get_position()[0] == node2.get_position()[0] and node1.get_position()[1] == node2.get_position()[1]

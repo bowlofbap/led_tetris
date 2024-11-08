@@ -3,15 +3,16 @@ from Shape import Shape
 import random
 
 class Bag:
-    _current_pieces: List[Optional[Shape]] = []
-    _held_piece_shape: Optional[Shape] = None
-    _can_swap = True
 
     def __init__(self):
+        self._current_pieces: List[Optional[Shape]] = []
+        self._held_piece_shape: Optional[Shape] = None
+        self._can_swap = True
         self._add_another_bag()
 
     def _add_another_bag(self):
         temp_bag = list(Shape)
+        temp_bag.pop(7)
         random.shuffle(temp_bag)
         for piece in temp_bag:
             self._current_pieces.append(piece)

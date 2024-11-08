@@ -5,9 +5,6 @@ from Color import Color
 import constants
 
 class BoardHandler:
-    _pixels      = None
-
-    _game: Optional[TetrisGame] = None
 
     def __init__(self, game):
         self._game = game
@@ -18,8 +15,9 @@ class BoardHandler:
             order = neopixel.GRB
             self._pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=constants.LED_BRIGHTNESS, auto_write=False,pixel_order=order)
 
-    def _draw_pixel(self, x, y, color: Color):
+    def _draw_pixel(self, x, y, color: Color, shadow: bool):
         if (x>=0 and y>=0):
+            #brightness = max(0.0, min(0.4, 1.0))
             self._pixels[self._get_pixel_from_grid(x,y)] = color._value_
 
     #helper to translate the continuous strip into a grid
@@ -47,7 +45,11 @@ class BoardHandler:
                 node: Node = game_nodes[y][x]
                 node_shape = node.get_shape()
                 if node_shape:
-                    self._draw_pixel(y, x, node_shape.color)
+                    self._draw_pixel(y, x, node_shape.color, node.get_shadow())
+        self._pixels.show()
+
+    def turn_off(self):
+        self.clear()
         self._pixels.show()
 
     #main update that gets called during the loop to update the screen

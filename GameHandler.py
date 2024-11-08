@@ -6,20 +6,19 @@ from TetrisGame import TetrisGame
 from typing import Optional
 import pygame
 import math
+import sys
 
 class GameHandler:
     #abstraction to handle inputs and gameloop and wraps around the game itself
     _bluetooth         = True
     _pi                = None
     _debug             = False
-    _clock             = None
-    _joystick          = None
-    _last_direction    = None
-    
-    _game:          Optional[TetrisGame]       = None
-    _board_handler: Optional[BoardHandler]     = None
 
     def __init__(self, game, debug = False):
+        self._clock             = None
+        self._joystick          = None
+        self._last_direction    = None
+        self._running           = True
         self._game = game
         self._debug = debug
         self._board_handler = BoardHandler(game)
@@ -47,7 +46,7 @@ class GameHandler:
         self.loop()
 
     def loop(self):
-        while True:
+        while self._running:
             if not self._debug:
                 for event in pygame.event.get():
                     if event.type == pygame.JOYAXISMOTION:
@@ -67,6 +66,9 @@ class GameHandler:
                 self._game.run()
             self._board_handler.update()
             self._clock.tick(30)
+        self.clear_screen()
+        pygame.quit()
+        sys.exit()
 
     def _convert_bt_to_direction_and_motion(self, raw_input_x, raw_input_y):
         # Handle release state
@@ -108,6 +110,13 @@ class GameHandler:
             self._game.rotate_piece(-1)
         elif input == ControllerMap.R.value:
             self._game.rotate_piece(1)
+        elif input == ControllerMap.START.value:
+            self._running = False
+        elif input == ControllerMap.X.value or input == ControllerMap.Y.value:
+            self._game.swap_piece()
+
+    def clear_screen(self):
+        self._board_handler.turn_off()
 
     def _process_button_up(self, input):
         input

@@ -7,29 +7,29 @@ from Piece import Piece
 from GameNodes import GameNodes
 
 class TetrisGame:
-    _left_hold = False
-    _right_hold = False
-    _left_delay = time.time()
-    _right_delay = time.time()
-    _hold_delay = constants.HOLD_DELAY
-    _hold_interval = constants.HOLD_INTERVAL
-    _next_hold_tick = time.time()
-    _buffer = constants.BUFFER
-    _current_piece: Optional[Piece] = None
-    _game_nodes: Optional[GameNodes] = None
-    _bag: Optional[Bag] = None
-    _is_running = True
-    _quickdrop = False
-
-    _speed = constants.INITIAL_SPEED
-    _lines_cleared = 0
-    _level = 0
-    _score = 0
-    _combo = 0
-    _rotations = 0
-    _back_to_back = False
 
     def __init__(self):
+        self._left_hold = False
+        self._right_hold = False
+        self._left_delay = time.time()
+        self._right_delay = time.time()
+        self._hold_delay = constants.HOLD_DELAY
+        self._hold_interval = constants.HOLD_INTERVAL
+        self._next_hold_tick = time.time()
+        self._buffer = constants.BUFFER
+        self._current_piece: Optional[Piece] = None
+        self._game_nodes: Optional[GameNodes] = None
+        self._bag: Optional[Bag] = None
+        self._is_running = True
+        self._quickdrop = False
+
+        self._speed = constants.INITIAL_SPEED
+        self._lines_cleared = 0
+        self._level = 0
+        self._score = 0
+        self._combo = 0
+        self._rotations = 0
+        self._back_to_back = False
         self.restart()
 
     def restart(self):
@@ -48,10 +48,10 @@ class TetrisGame:
         tick = time.time()
         if tick >= self._next_hold_tick:
             if self._left_hold and tick >= self._left_delay:
-                self.move_piece(Direction.LEFT)
+                self.move_piece(Direction.LEFT.name)
                 self._next_hold_tick = time.time() + self._hold_interval
             elif self._right_hold and tick >= self._right_delay:
-                self.move_piece(Direction.RIGHT)
+                self.move_piece(Direction.RIGHT.name)
                 self._next_hold_tick = time.time() + self._hold_interval
 
         #dropping logic
@@ -68,7 +68,6 @@ class TetrisGame:
             if not next_piece_shape:
                 next_piece_shape = self._bag.get_next_piece()
             new_piece = Piece(self._game_nodes, next_piece_shape, False)
-            print(new_piece.get_nodes())
             for node in new_piece.get_nodes():
                 if node.is_occupied():
                     new_piece.init_new_piece()
@@ -81,7 +80,6 @@ class TetrisGame:
     def move_piece(self, direction):
         if self._current_piece:
             success = self._current_piece.try_move_direction(direction)
-            print("Moved in the direction ", direction)
             return success
         return False
     
@@ -94,21 +92,29 @@ class TetrisGame:
                     self._rotations += 1
                 return True
         return False
+    
+    def swap_piece(self):
+        new_piece_shape = self._bag.replace_swap_piece(self._current_piece)
+        if new_piece_shape != self._current_piece:
+            self._current_piece.destroy()
+            self._current_piece = None
+            self._get_new_piece(new_piece_shape)
+            #update bag graphic if you have this
+            #update movement tick?? maybe
 
     def press_down_direction(self, direction):
         self.move_piece(direction)
-        if direction == "left":
+        if direction == Direction.LEFT.name:
             self._left_hold = True
             self._left_delay = time.time() + self._hold_delay
-        elif direction == "right":
+        elif direction == Direction.RIGHT.name:
             self._right_hold = True
             self._right_delay = time.time() + self._hold_delay
 
     def release_direction(self, direction):
-        print(direction + " released")
-        if direction == "left":
+        if direction == Direction.LEFT.name:
             self._left_hold = False
-        elif direction == "right":
+        elif direction == Direction.RIGHT.name:
             self._right_hold = False
 
     def get_game_nodes(self):

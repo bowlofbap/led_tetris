@@ -5,34 +5,37 @@ from Wallkick import Wallkick
 from Node import Node
 from typing import Optional, List
 
-class Piece():
-    _game_nodes: Optional[GameNodes] =  None
-    _shape: Optional[Shape] = None
-    _central_node: Optional[Node] = None
-    _nodes: Optional[List[Node]] = []
-    _rotation = 0
-    _shadow = None
-    _t_spin = False
-
+class Piece:
     def __init__(self, game_nodes: GameNodes, shape: Shape, is_secondary_spawn: bool):
         self._game_nodes = game_nodes
         self._shape = shape
+        self._nodes = []  # Initialize _nodes as an instance variable
+        self._rotation = 0
+        self._shadow = None
+        self._t_spin = False
+        self._central_node = None
         self._prepare_nodes(is_secondary_spawn)
 
     def _prepare_nodes(self, is_secondary_spawn):
         initial_node_pos = self._game_nodes.get_spawn_tile().get_position()
         if is_secondary_spawn:
             initial_node_pos = self._game_nodes.get_second_spawn_tile().get_position()
-        
-        for node_vector in self._shape.coordinates:
-            node = self._game_nodes.get_node_at_position(initial_node_pos[0] + node_vector[0], initial_node_pos[1] + node_vector[1])
-            self._nodes.append(node)
-        self._central_node = self._nodes[0]
 
+        for node_vector in self._shape.coordinates:
+            node = self._game_nodes.get_node_at_position(
+                initial_node_pos[0] + node_vector[0],
+                initial_node_pos[1] + node_vector[1]
+            )
+            self._nodes.append(node)  # Append nodes to the instance variable _nodes
+        self._central_node = self._nodes[0] if self._nodes else None
+        
     def init_new_piece(self):
         for node in self._nodes:
             node.occupy(self._shape, False)
         #somethign about the shadow here
+
+    def get_shape(self):
+        return self._shape
 
     def get_nodes(self):
         return self._nodes
@@ -115,7 +118,6 @@ class Piece():
         rotation_tests = appropriate_vectors[self._rotation]
         i = 0
         for rotation_test in rotation_tests:
-            print("Attempt", i)
             rotation_vector_x = rotation_test[0] - appropriate_vectors[desired_rotation][i][0]
             rotation_vector_y = rotation_test[1] - appropriate_vectors[desired_rotation][i][1]
             rotation_vector = (rotation_vector_x, rotation_vector_y)
