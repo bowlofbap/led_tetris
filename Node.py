@@ -1,24 +1,35 @@
-class Node:
-    x = None
-    y = None
-    g = None
-    f = None
-    destination = None
-    parent = None
+from Shape import Shape
 
-    def __init__(self, x, y, g, destination):
-        self.x = x
-        self.y = y
-        self.g = g
-        if destination: 
-            self.destination = destination
-            self.calcF()
-        else:
-            f = 0
+class Node:
+    _occupied = False
+    _tetraShape = None
+    _x = 0,
+    _y = 0
     
-    def calcF(self):
-        h = abs(self.x - self.destination.x) + abs(self.y - self.destination.y)
-        self.f = self.g + h
+    def __init__(self, x, y):
+        self._x = x
+        self._y = y
+
+    def is_occupied(self):
+        return self._occupied
+    
+    def get_position(self):
+        return self._x, self._y
+    
+    def occupy(self, shape, shadow):
+        if shape:
+            if shape == Shape.X:
+                self._occupied = True
+                self._tetraShape = shape
+                return
+            if not shadow:
+                self._occupied = True
+                self._tetraShape = shape
+            else:
+                self._occupied = False
+        else:
+            self._occupied = False
+            self._tetraShape = None
 
     @staticmethod
     def equals(node1, node2):

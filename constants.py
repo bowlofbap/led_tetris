@@ -39,8 +39,9 @@ CONTROLLER_MAPPING = {
 
 COLORS      = (BLUE,GREEN,RED,YELLOW,CYAN,MAGENTA,ORANGE)
 
-WIDTH       = 10
-HEIGHT      = 20
+WIDTH         = 10
+HEIGHT        = 20
+UNSEEN_HEIGHT = 4
  
 DIRECTIONS = {
     "left" : {
