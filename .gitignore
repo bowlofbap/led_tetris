@@ -1,0 +1,68 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment directories
+env/
+venv/
+ENV/
+.venv/
+.VENV/
+
+# Packages
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Pygame/SDL cache and debug files
+*.log
+*.bak
+*.tmp
+
+# Raspberry Pi system-specific files
+*.swp  # Swap files
+*.swo
+*.bak
+*~
+
+# IDE and editor config files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Python test files
+.pytest_cache/
+.tox/
+coverage.xml
+*.cover
+*.coverage
+htmlcov/
+
+# Compiled files from C extensions or other binary artifacts
+*.so
+
+# Dependencies file (if you're using pipenv or poetry)
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# If using Jupyter notebooks for visualizations or experiments
+.ipynb_checkpoints/
+
+# Logs and debugging files
+logs/
+*.log
+
+# Other config files
+*.ini
+*.cfg
+.env  # Environment variable files, if using any
