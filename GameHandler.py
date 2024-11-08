@@ -1,4 +1,6 @@
 import constants
+from Direction import Direction
+from ControllerMap import ControllerMap
 import pygame
 import math
 
@@ -87,19 +89,15 @@ class GameHandler:
         return closest_direction, "press"
 
     def _process_direction_down(self, input):
-        if constants.DIRECTIONS.get(input):
-            if input == "left" or input == "right":
-                self._game.press_down_direction(input)
+        if input == Direction.LEFT.name or input == Direction.RIGHT.name:
+            self._game.press_down_direction(input)
 
     def _process_direction_up(self, input):
-        if constants.DIRECTIONS.get(input):
-            if input == "left" or input == "right":
-                self._game.release_direction(input)
+        if input == Direction.LEFT.name or input == Direction.RIGHT.name:
+            self._game.release_direction(input)
 
     def _process_button_down(self, input):
-        if constants.CONTROLLER_MAPPING.get(input):
-            print(constants.CONTROLLER_MAPPING.get(input) + " pressed down")
+        print(ControllerMap(input).name + " pressed down")
 
     def _process_button_up(self, input):
-        if constants.CONTROLLER_MAPPING.get(input):
-            print(constants.CONTROLLER_MAPPING.get(input) + " released")
+        print(ControllerMap(input).name + " released")

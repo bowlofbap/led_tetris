@@ -1,5 +1,6 @@
 import time
 import constants
+from Direction import Direction
 
 class TetrisGame:
     _left_hold = False
@@ -45,10 +46,10 @@ class TetrisGame:
                 self._next_hold_tick = time.time() + self._hold_interval
 
     def move_piece(self, direction):
-        direction_xy = constants.DIRECTIONS.get(direction)
+        direction_vector = Direction[direction]
         #if self._current_tetra and constants.DIRECTIONS.get(direction):
             #success = self._current_tetra.try_move(direction)
-        print(direction, direction_xy)
+        print(direction, direction_vector.x, direction_vector.y)
 
     def press_down_direction(self, direction):
         self.move_piece(direction)

@@ -3,7 +3,7 @@ from Shape import Shape
 class Node:
     _occupied = False
     _tetraShape = None
-    _x = 0,
+    _x = 0
     _y = 0
     
     def __init__(self, x, y):
@@ -14,7 +14,7 @@ class Node:
         return self._occupied
     
     def get_position(self):
-        return self._x, self._y
+        return (self._x, self._y)
     
     def occupy(self, shape, shadow):
         if shape:

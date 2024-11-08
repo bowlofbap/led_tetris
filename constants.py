@@ -9,83 +9,30 @@ PI = True
 
 #CONSTANTS
 BLANK = '.'
-#               R    G    B
-WHITE       = (255, 255, 255)
-GRAY        = (185, 185, 185)
-BLACK       = (  0,   0,   0)
-RED         = (255,   0,   0)
-LIGHTRED    = (175,  20,  20)
-GREEN       = (  0, 255,   0)
-LIGHTGREEN  = ( 20, 175,  20)
-BLUE        = (  0,   0, 255)
-LIGHTBLUE   = ( 20,  20, 175)
-YELLOW      = (255, 255,   0)
-LIGHTYELLOW = (175, 175,  20)
-CYAN        = (  0, 255, 255)
-MAGENTA     = (255,   0, 255)
-ORANGE      = (255, 100,   0)
-
-#CONTROLLER INFO for 8bitdo zero 2
-CONTROLLER_MAPPING = {
-    0: "B",
-    1: "A", 
-    2: "Y",
-    3: "X", 
-    4: "L",
-    5: "R", 
-    8: "Select",
-    9: "Start", 
-}
-
-COLORS      = (BLUE,GREEN,RED,YELLOW,CYAN,MAGENTA,ORANGE)
 
 WIDTH         = 10
 HEIGHT        = 20
 UNSEEN_HEIGHT = 4
- 
-DIRECTIONS = {
-    "left" : {
-        'x': -1,
-        'y': 0
-    },
-    "right" : {
-        'x': 1,
-        'y': 0
-    },
-    "up" : {
-        'x': 0,
-        'y': 1
-    },
-    "down" : {
-        'x': 0,
-        'y': -1
-    },
-}
-
 #used to parse the data from bluetooth controllers (x for axis, y for value)
 BLUETOOTH_DIRECTIONS = {
-    "left" : {
+    "LEFT" : {
         'x': 0,
         'y': -1
     },
-    "right" : {
+    "RIGHT" : {
         'x': 0,
         'y': 1
     },
-    "up" : {
+    "UP" : {
         'x': 1,
         'y': -1
     },
-    "down" : {
+    "DOWN" : {
         'x': 1,
         'y': 1
     },
 }
 
-BORDERCOLOR = BLUE
-BGCOLOR = BLACK
-TEXTCOLOR = WHITE
-TEXTSHADOWCOLOR = GRAY
 SIZE = 20
 #time before piece moves from holding down
 HOLD_DELAY = .2
