@@ -50,15 +50,7 @@ class TetrisGame:
             #success = self._current_tetra.try_move(direction)
         print(direction, direction_xy)
 
-    def _reset_stats(self):
-        self._speed = constants.INITIAL_SPEED
-        self._lines_cleared = 0
-        self._level = 0
-        self._score = 0
-        self._combo = 0
-        self._back_to_back = False
-
-    def _press_down_direction(self, direction):
+    def press_down_direction(self, direction):
         self.move_piece(direction)
         if direction == "left":
             self._left_hold = True
@@ -67,9 +59,17 @@ class TetrisGame:
             self._right_hold = True
             self._right_delay = time.time() + self._hold_delay
 
-    def _release_direction(self, direction):
+    def release_direction(self, direction):
         print(direction + " released")
         if direction == "left":
             self._left_hold = False
         elif direction == "right":
             self._right_hold = False
+
+    def _reset_stats(self):
+        self._speed = constants.INITIAL_SPEED
+        self._lines_cleared = 0
+        self._level = 0
+        self._score = 0
+        self._combo = 0
+        self._back_to_back = False

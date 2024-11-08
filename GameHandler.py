@@ -89,12 +89,12 @@ class GameHandler:
     def _process_direction_down(self, input):
         if constants.DIRECTIONS.get(input):
             if input == "left" or input == "right":
-                self._game._press_down_direction(input)
+                self._game.press_down_direction(input)
 
     def _process_direction_up(self, input):
         if constants.DIRECTIONS.get(input):
             if input == "left" or input == "right":
-                self._game._release_direction(input)
+                self._game.release_direction(input)
 
     def _process_button_down(self, input):
         if constants.CONTROLLER_MAPPING.get(input):
