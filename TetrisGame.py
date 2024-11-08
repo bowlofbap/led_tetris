@@ -26,6 +26,7 @@ class TetrisGame:
     _level = 0
     _score = 0
     _combo = 0
+    _rotations = 0
     _back_to_back = False
 
     def __init__(self):
@@ -62,6 +63,7 @@ class TetrisGame:
 
     def _get_new_piece(self, next_piece_shape=None):
         self._buffer = constants.BUFFER
+        self._rotations = 0
         if not self._current_piece:
             if not next_piece_shape:
                 next_piece_shape = self._bag.get_next_piece()
@@ -81,6 +83,16 @@ class TetrisGame:
             success = self._current_piece.try_move_direction(direction)
             print("Moved in the direction ", direction)
             return success
+        return False
+    
+    def rotate_piece(self, direction_multiplier):
+        if self._current_piece:
+            success = self._current_piece.try_rotation_angle(direction_multiplier)
+            if success:
+                if self._rotations < constants.MAX_ROTATIONS:
+                    self._buffer = constants.BUFFER
+                    self._rotations += 1
+                return True
         return False
 
     def press_down_direction(self, direction):

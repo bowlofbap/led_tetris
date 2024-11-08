@@ -1,7 +1,7 @@
 from enum import Enum
 
 class Wallkick(Enum):
-    ROTATION_VECTORS = [
+    ROTATION_VECTORS = (
         [
             (0, 0),
             (0, 0),
@@ -30,8 +30,9 @@ class Wallkick(Enum):
             (0, 2),
             (-1, 2)
         ]
-    ],
-    I_ROTATION_VECTORS = [
+    )
+
+    I_ROTATION_VECTORS = (
         [
             (0, 0),
             (-1, 0),
@@ -59,5 +60,5 @@ class Wallkick(Enum):
             (0, 1),
             (0, -1),
             (0, 2)
-        ],
-    ]
+        ]
+    )

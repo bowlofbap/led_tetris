@@ -2,19 +2,22 @@ import constants
 from Direction import Direction
 from ControllerMap import ControllerMap
 from BoardHandler import BoardHandler
+from TetrisGame import TetrisGame
+from typing import Optional
 import pygame
 import math
 
 class GameHandler:
     #abstraction to handle inputs and gameloop and wraps around the game itself
     _bluetooth         = True
-    _game              = None
     _pi                = None
     _debug             = False
     _clock             = None
     _joystick          = None
     _last_direction    = None
-    _board_handler     = None
+    
+    _game:          Optional[TetrisGame]       = None
+    _board_handler: Optional[BoardHandler]     = None
 
     def __init__(self, game, debug = False):
         self._game = game
@@ -101,7 +104,10 @@ class GameHandler:
             self._game.release_direction(input)
 
     def _process_button_down(self, input):
-        print(ControllerMap(input).name + " pressed down")
+        if input == ControllerMap.L.value:
+            self._game.rotate_piece(-1)
+        elif input == ControllerMap.R.value:
+            self._game.rotate_piece(1)
 
     def _process_button_up(self, input):
-        print(ControllerMap(input).name + " released")
+        input
