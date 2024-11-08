@@ -27,7 +27,7 @@ class Bag:
         self._can_swap = True
     
     def get_next_piece(self):
-        if len(self._current_pieces < 7):
+        if len(self._current_pieces) < 7:
             self._add_another_bag()
         next_piece = self._current_pieces.pop(0)
         return next_piece

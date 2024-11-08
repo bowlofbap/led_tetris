@@ -2,7 +2,7 @@ from Shape import Shape
 
 class Node:
     _occupied = False
-    _tetraShape = None
+    _shape = None
     _x = 0
     _y = 0
     
@@ -20,16 +20,22 @@ class Node:
         if shape:
             if shape == Shape.X:
                 self._occupied = True
-                self._tetraShape = shape
+                self._shape = shape
                 return
             if not shadow:
                 self._occupied = True
-                self._tetraShape = shape
+                self._shape = shape
             else:
                 self._occupied = False
         else:
             self._occupied = False
-            self._tetraShape = None
+            self._shape = None
+
+    def get_shape(self):
+        if self._shape == None: 
+            return None
+        else:
+            return self._shape
 
     def equals(self, node1, node2):
-        return node1.x == node2.x and node1.y == node2.y
+        return node1.get_position()[0] == node2.get_position()[0] and node1.get_position()[1] == node2.get_position()[1]

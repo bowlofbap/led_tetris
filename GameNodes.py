@@ -3,7 +3,7 @@ from constants import HEIGHT, WIDTH
 from typing import List, Optional
 
 class GameNodes:
-    _nodes: List[List[Optional[Node]]] = [[None for _ in range(HEIGHT) for _ in range(WIDTH)]]
+    _nodes: List[List[Optional[Node]]] = [[None for _ in range(HEIGHT)] for _ in range(WIDTH)]
     _spawn_tile: Optional[Node]  = None
     _second_spawn_tile: Optional[Node] = None
 
@@ -11,6 +11,7 @@ class GameNodes:
         self.reset()
 
     def reset(self):
+        print()
         for x in range(WIDTH):
             for y in range(HEIGHT):
                 new_node = Node(x, y)

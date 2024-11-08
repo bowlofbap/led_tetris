@@ -1,6 +1,7 @@
 import constants
 from Direction import Direction
 from ControllerMap import ControllerMap
+from BoardHandler import BoardHandler
 import pygame
 import math
 
@@ -13,10 +14,12 @@ class GameHandler:
     _clock             = None
     _joystick          = None
     _last_direction    = None
+    _board_handler     = None
 
     def __init__(self, game, debug = False):
         self._game = game
         self._debug = debug
+        self._board_handler = BoardHandler(game)
 
     #called externally to kick off listening for inputs
     def start(self):
@@ -59,6 +62,7 @@ class GameHandler:
                         button = event.button        
                         self._process_button_up(button)
                 self._game.run()
+            self._board_handler.update()
             self._clock.tick(30)
 
     def _convert_bt_to_direction_and_motion(self, raw_input_x, raw_input_y):

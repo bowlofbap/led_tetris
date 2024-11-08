@@ -1,6 +1,10 @@
 import time
 import constants
 from Direction import Direction
+from typing import Optional
+from Bag import Bag
+from Piece import Piece
+from GameNodes import GameNodes
 
 class TetrisGame:
     _left_hold = False
@@ -11,8 +15,9 @@ class TetrisGame:
     _hold_interval = constants.HOLD_INTERVAL
     _next_hold_tick = time.time()
     _buffer = constants.BUFFER
-    _current_tetra = None
-    _bag = None
+    _current_piece: Optional[Piece] = None
+    _game_nodes: Optional[GameNodes] = None
+    _bag: Optional[Bag] = None
     _is_running = True
     _quickdrop = False
 
@@ -23,33 +28,60 @@ class TetrisGame:
     _combo = 0
     _back_to_back = False
 
+    def __init__(self):
+        self.restart()
+
     def restart(self):
-        self._current_tetra = None
+        self._bag = Bag()
+        self._game_nodes = GameNodes()
+        self._current_piece = None
         self._left_hold = False
         self._right_hold = False
         self._quickdrop = False 
-        self._current_tetra = None
-        self._bag = None
+        self._current_piece = None
         self._is_running = False
         self._reset_stats()
-        self.run()
     
     def run(self):
         #movement logic
         tick = time.time()
         if tick >= self._next_hold_tick:
             if self._left_hold and tick >= self._left_delay:
-                print("Moving piece left")
+                self.move_piece(Direction.LEFT)
                 self._next_hold_tick = time.time() + self._hold_interval
             elif self._right_hold and tick >= self._right_delay:
-                print("Moving piece right")
+                self.move_piece(Direction.RIGHT)
                 self._next_hold_tick = time.time() + self._hold_interval
 
+        #dropping logic
+        if not self._current_piece:
+            new_piece = self._get_new_piece()
+            if not new_piece:
+                print("Lost Game!")
+            self._bag.reset_swappable()
+
+    def _get_new_piece(self, next_piece_shape=None):
+        self._buffer = constants.BUFFER
+        if not self._current_piece:
+            if not next_piece_shape:
+                next_piece_shape = self._bag.get_next_piece()
+            new_piece = Piece(self._game_nodes, next_piece_shape, False)
+            print(new_piece.get_nodes())
+            for node in new_piece.get_nodes():
+                if node.is_occupied():
+                    new_piece.init_new_piece()
+                    return None
+            new_piece.init_new_piece()
+            self._current_piece = new_piece
+            return new_piece
+        return None
+
     def move_piece(self, direction):
-        direction_vector = Direction[direction]
-        #if self._current_tetra and constants.DIRECTIONS.get(direction):
-            #success = self._current_tetra.try_move(direction)
-        print(direction, direction_vector.x, direction_vector.y)
+        if self._current_piece:
+            success = self._current_piece.try_move_direction(direction)
+            print("Moved in the direction ", direction)
+            return success
+        return False
 
     def press_down_direction(self, direction):
         self.move_piece(direction)
@@ -66,6 +98,9 @@ class TetrisGame:
             self._left_hold = False
         elif direction == "right":
             self._right_hold = False
+
+    def get_game_nodes(self):
+        return self._game_nodes
 
     def _reset_stats(self):
         self._speed = constants.INITIAL_SPEED

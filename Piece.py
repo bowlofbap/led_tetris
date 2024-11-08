@@ -9,7 +9,7 @@ class Piece():
     _game_nodes: Optional[GameNodes] =  None
     _shape: Optional[Shape] = None
     _central_node: Optional[Node] = None
-    _nodes: Optional[List[Node]] = None
+    _nodes: Optional[List[Node]] = []
     _rotation = 1
     _shadow = None
     _t_spin = False
@@ -24,9 +24,11 @@ class Piece():
         initial_node_pos = self._game_nodes.get_spawn_tile().get_position()
         if is_secondary_spawn:
             initial_node_pos = self._game_nodes.get_second_spawn_tile().get_position()
-        for node_vector in range(self._shape.coordinates):
-            self._game_nodes.get_node_at_position(initial_node_pos[0], node_vector[0], initial_node_pos[1], node_vector[1])
-    
+        
+        for node_vector in self._shape.coordinates:
+            node = self._game_nodes.get_node_at_position(initial_node_pos[0] + node_vector[0], initial_node_pos[1] + node_vector[1])
+            self._nodes.append(node)
+
     def init_new_piece(self):
         for node in self._nodes:
             node.occupy(self._shape, False)
@@ -43,7 +45,7 @@ class Piece():
         new_nodes: Optional[List[Node]] = []
         potential_central_node: Optional[Node] = None
         for node in self._nodes:
-            look_at_node = self._game_nodes.get_node_at_position(node.get_position[0] + Direction[direction].x, node.get_position[1] + Direction[direction].y)
+            look_at_node = self._game_nodes.get_node_at_position(node.get_position()[0] + Direction[direction].x, node.get_position()[1] + Direction[direction].y)
             if look_at_node == None or (not self._does_contain_node(look_at_node) and look_at_node.is_occupied()):
                 #can't move to that direction
                 return False
@@ -59,7 +61,7 @@ class Piece():
             node.occupy(self._shape, False)
         self._central_node = potential_central_node
         self._t_spin = False
-        print("Successfully move to the "+direction.name)
+        print("Successfully move to the ", direction)
         return True
     
     def _does_contain_node(self, check_node):
