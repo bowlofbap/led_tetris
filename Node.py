@@ -31,6 +31,5 @@ class Node:
             self._occupied = False
             self._tetraShape = None
 
-    @staticmethod
-    def equals(node1, node2):
+    def equals(self, node1, node2):
         return node1.x == node2.x and node1.y == node2.y
