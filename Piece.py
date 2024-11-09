@@ -28,7 +28,7 @@ class Piece:
             )
             self._nodes.append(node)  # Append nodes to the instance variable _nodes
         self._central_node = self._nodes[0] if self._nodes else None
-        
+
     def init_new_piece(self):
         for node in self._nodes:
             node.occupy(self._shape, False)
@@ -74,46 +74,10 @@ class Piece:
     
     #direction_multiplier is neg/pos depending on left or right to indicate which way to search for next position in the table
     def try_rotation_angle(self, direction_multiplier):
-        def __adjust_rotation(r):
-            if r < 0:
-                r = 3
-            elif r > 3:
-                r = 0
-            return r
-        
-        def __rotate(adjustment_vector):
-            new_nodes: Optional[List[Node]] = []
-            potential_central_node: Optional[Node] = None
-            x_0 = self._central_node.get_position()[0] + adjustment_vector[0]
-            y_0 = self._central_node.get_position()[1] + adjustment_vector[1]
-            for node in self._nodes:
-                x_1 = node.get_position()[0] + adjustment_vector[0]
-                y_1 = node.get_position()[1] + adjustment_vector[1]
-                a = x_0 - x_1
-                b = y_1 - y_0
-                x2 = x_0 + (b * direction_multiplier)
-                y2 = y_0 + (a * direction_multiplier)
-                look_at_node = self._game_nodes.get_node_at_position(x2, y2)
-                if not look_at_node or (not self._does_contain_node(look_at_node) and look_at_node.is_occupied()):
-                    #can't rotate in that direction
-                    return False
-                new_nodes.append(look_at_node)
-                if node == self._central_node:
-                    potential_central_node = look_at_node
-            for node in self._nodes:
-                node.occupy(None, False)
-            self._nodes = new_nodes
-            #TODO: update the shadow here
-            for node in self._nodes:
-                node.occupy(self._shape, False)
-            self._rotation = __adjust_rotation(self._rotation + direction_multiplier)
-            self._central_node = potential_central_node
-            return True
-
         if self._shape == Shape.O:
             return False
         
-        desired_rotation = __adjust_rotation(self._rotation + direction_multiplier)
+        desired_rotation = self.__adjust_rotation(self._rotation + direction_multiplier)
         appropriate_vectors = Wallkick.I_ROTATION_VECTORS.value if self._shape == Shape.I else Wallkick.ROTATION_VECTORS.value
         rotation_tests = appropriate_vectors[self._rotation]
         i = 0
@@ -121,7 +85,7 @@ class Piece:
             rotation_vector_x = rotation_test[0] - appropriate_vectors[desired_rotation][i][0]
             rotation_vector_y = rotation_test[1] - appropriate_vectors[desired_rotation][i][1]
             rotation_vector = (rotation_vector_x, rotation_vector_y)
-            if __rotate(rotation_vector):
+            if self.__rotate(rotation_vector, direction_multiplier):
                 def __test_t_spin():
                     filled_corners = 0
                     for _ in range(4): 
@@ -135,6 +99,61 @@ class Piece:
                 return True
             i+=1
         return False
+    
+    #TODO: fix this
+    def try_rotate_180(self):
+        if self._shape == Shape.O:
+            return False
+        desired_rotation = self.__adjust_rotation(self._rotation + 2)
+        appropriate_vectors = Wallkick.I_ROTATION_VECTORS.value if self._shape == Shape.I else Wallkick.ROTATION_VECTORS.value
+        rotation_tests = appropriate_vectors[self._rotation]
+        i = 0
+        for rotation_test in rotation_tests:
+            rotation_vector_x = rotation_test[0] - appropriate_vectors[desired_rotation][i][0]
+            rotation_vector_y = rotation_test[1] - appropriate_vectors[desired_rotation][i][1]
+            rotation_vector = (rotation_vector_x, rotation_vector_y)
+            if self.__rotate(rotation_vector, 2):
+                return True
+            i+=1
+        return False
+        
+    def __rotate(self, adjustment_vector, direction_multiplier):
+        new_nodes: Optional[List[Node]] = []
+        potential_central_node: Optional[Node] = None
+        x_0 = self._central_node.get_position()[0] + adjustment_vector[0]
+        y_0 = self._central_node.get_position()[1] + adjustment_vector[1]
+        for node in self._nodes:
+            x_1 = node.get_position()[0] + adjustment_vector[0]
+            y_1 = node.get_position()[1] + adjustment_vector[1]
+            a = x_0 - x_1
+            b = y_1 - y_0  
+            c = direction_multiplier if direction_multiplier != 2 else 1 #180 adjustment
+            x2 = x_0 + (b * direction_multiplier)
+            y2 = y_0 + (a * direction_multiplier)
+            look_at_node = self._game_nodes.get_node_at_position(x2, y2)
+            if not look_at_node or (not self._does_contain_node(look_at_node) and look_at_node.is_occupied()):
+                #can't rotate in that direction
+                return False
+            new_nodes.append(look_at_node)
+            if node == self._central_node:
+                potential_central_node = look_at_node
+        for node in self._nodes:
+            node.occupy(None, False)
+        self._nodes = new_nodes
+        #TODO: update the shadow here
+        for node in self._nodes:
+            node.occupy(self._shape, False)
+        self._rotation = self.__adjust_rotation(self._rotation + direction_multiplier)
+        self._central_node = potential_central_node
+        return True
+    
+    def __adjust_rotation(self, r):
+        if r < 0:
+            r = 3
+        elif r > 3:
+            r = 0
+        return r
+
 
     def solidify(self):
         #TODO: destroy shadow here

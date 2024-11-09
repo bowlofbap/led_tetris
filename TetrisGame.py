@@ -85,7 +85,7 @@ class TetrisGame:
     
     def rotate_piece(self, direction_multiplier):
         if self._current_piece:
-            success = self._current_piece.try_rotation_angle(direction_multiplier)
+            success = self._current_piece.try_rotation_angle(direction_multiplier) if direction_multiplier != 2 else self._current_piece.try_rotate_180()
             if success:
                 if self._rotations < constants.MAX_ROTATIONS:
                     self._buffer = constants.BUFFER

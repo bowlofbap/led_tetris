@@ -110,9 +110,11 @@ class GameHandler:
             self._game.rotate_piece(-1)
         elif input == ControllerMap.R.value:
             self._game.rotate_piece(1)
+        elif input == ControllerMap.Y.value:
+            self._game.rotate_piece(2)
         elif input == ControllerMap.START.value:
             self._running = False
-        elif input == ControllerMap.X.value or input == ControllerMap.Y.value:
+        elif input == ControllerMap.X.value:
             self._game.swap_piece()
 
     def clear_screen(self):
