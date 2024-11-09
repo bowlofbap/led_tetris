@@ -31,7 +31,6 @@ class GameNodes:
     
     def get_node_at_position(self, x, y) -> Optional[Node]:
         if x < 0 or y < 1 or x > WIDTH - 1 or y > HEIGHT - 1:
-            print("Position out of bounds")
             return None
         return self._nodes[x][y]
     

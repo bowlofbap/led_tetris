@@ -49,6 +49,7 @@ class GameHandler:
         while self._running:
             if not self._debug:
                 for event in pygame.event.get():
+                    print(event)
                     if event.type == pygame.JOYAXISMOTION:
                         axis = event.axis         # Axis number (0 for horizontal, 1 for vertical)
                         position = event.value    # Position on the axis (-1.0 to 1.0)
@@ -102,8 +103,7 @@ class GameHandler:
             self._game.press_down_direction(input)
 
     def _process_direction_up(self, input):
-        if input == Direction.LEFT.name or input == Direction.RIGHT.name:
-            self._game.release_direction(input)
+        self._game.release_direction(input)
 
     def _process_button_down(self, input):
         if input == ControllerMap.L.value:

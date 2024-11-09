@@ -111,11 +111,12 @@ class TetrisGame:
             self._right_hold = True
             self._right_delay = time.time() + self._hold_delay
 
+    def _reset_holds(self):
+        self._left_hold = False
+        self._right_hold = False
+
     def release_direction(self, direction):
-        if direction == Direction.LEFT.name:
-            self._left_hold = False
-        elif direction == Direction.RIGHT.name:
-            self._right_hold = False
+        self._reset_holds()
 
     def get_game_nodes(self):
         return self._game_nodes
