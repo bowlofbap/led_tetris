@@ -143,6 +143,7 @@ class TetrisGame:
 
         #TODO: back to back logic
 
+        #TODO: Fix this 
         for _ in lines_to_clear:
             for y in range(constants.HEIGHT):
                 for x in range(constants.WIDTH):
@@ -152,6 +153,7 @@ class TetrisGame:
                     new_node = self._game_nodes.get_node_at_position(new_node_vector[0], new_node_vector[1])
                     if new_node and current_node:
                         current_node.occupy(new_node.get_shape(), False)
+
 
         #TODO combo logic
 
