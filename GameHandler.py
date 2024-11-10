@@ -49,7 +49,6 @@ class GameHandler:
         while self._running:
             if not self._debug:
                 for event in pygame.event.get():
-                    print(event)
                     if event.type == pygame.JOYAXISMOTION:
                         axis = event.axis         # Axis number (0 for horizontal, 1 for vertical)
                         position = event.value    # Position on the axis (-1.0 to 1.0)

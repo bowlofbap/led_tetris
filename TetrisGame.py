@@ -3,7 +3,7 @@ import constants
 from Direction import Direction
 from typing import Optional, List
 from Bag import Bag
-from Node import Node
+from Shape import Shape
 from Piece import Piece
 from GameNodes import GameNodes
 
@@ -159,7 +159,7 @@ class TetrisGame:
     def add_score(self, score_added):
         self._score += score_added
         #TODO: display this maybe?
-        print(self._score)
+        print("SCORE: ", self._score)
 
     def set_quick_drop(self, quick_drop):
         self._quickdrop = quick_drop
@@ -206,8 +206,11 @@ class TetrisGame:
         return False
     
     def swap_piece(self):
-        new_piece_shape = self._bag.replace_swap_piece(self._current_piece)
+        new_piece_shape = self._bag.replace_swap_piece(self._current_piece._shape)
+        #current_shape = self._current_piece.get_shape() only needed up to update the bag graphic
         if new_piece_shape != self._current_piece:
+            if new_piece_shape:
+                print(new_piece_shape)
             self._current_piece.destroy()
             self._current_piece = None
             self._get_new_piece(new_piece_shape)

@@ -11,7 +11,6 @@ class GameNodes:
         self.reset()
 
     def reset(self):
-        print()
         for x in range(WIDTH):
             for y in range(HEIGHT):
                 new_node = Node(x, y)

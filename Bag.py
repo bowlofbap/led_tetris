@@ -19,10 +19,10 @@ class Bag:
 
     def replace_swap_piece(self, new_piece_shape):
         if not self._can_swap: return False
-        origina_bag_piece = self._held_piece_shape
+        original_bag_piece = self._held_piece_shape
         self._held_piece_shape = new_piece_shape
         self._can_swap = False
-        return origina_bag_piece
+        return original_bag_piece
     
     def reset_swappable(self):
         self._can_swap = True

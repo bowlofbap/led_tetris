@@ -41,7 +41,6 @@ class Shadow:
             #print("not digging")
         for node in self._set_nodes:
             node.occupy(self._shape, True)
-            print(node.get_position()[1])
 
     def destroy(self):
         self._clear_nodes()
