@@ -1,8 +1,9 @@
 import time
 import constants
 from Direction import Direction
-from typing import Optional
+from typing import Optional, List
 from Bag import Bag
+from Node import Node
 from Piece import Piece
 from GameNodes import GameNodes
 
@@ -22,6 +23,8 @@ class TetrisGame:
         self._bag: Optional[Bag] = None
         self._is_running = True
         self._quickdrop = False
+        self._next_frame = time.time()
+        self._harddrop = False
 
         self._speed = constants.INITIAL_SPEED
         self._lines_cleared = 0
@@ -55,11 +58,120 @@ class TetrisGame:
                 self._next_hold_tick = time.time() + self._hold_interval
 
         #dropping logic
-        if not self._current_piece:
-            new_piece = self._get_new_piece()
-            if not new_piece:
-                print("Lost Game!")
-            self._bag.reset_swappable()
+        if tick >= self._next_frame or self._quickdrop:
+            self._next_frame = time.time() + (self._speed - (0.47 * self._level / constants.MAX_LEVEL))
+            if not self.move_piece(Direction.DOWN.name):
+                if self._buffer <= 0 or not self._current_piece:
+                    if self._harddrop:
+                        print("HardDrop")
+                    else:
+                        print("SoftDrop")
+                    self._harddrop = False
+                    if self._current_piece: 
+                        self._current_piece.solidify()
+                    self.check_lines(self._current_piece)
+                    self._current_piece = None
+                    if not self._get_new_piece():
+                        print("Lost Game!")
+                    self._bag.reset_swappable()
+                else:
+                    self._quickdrop = False
+                    self._buffer -= 1
+                    self._next_frame = time.time()
+            else:
+                self.add_score(1)
+
+    def check_lines(self, piece: Piece):
+        added_score = 0
+        self._current_piece = None
+        if not piece: return 
+        lines_to_clear: List[int] = []
+        lines_to_check: List[int] = []
+
+        #setting up lines to search
+        for node in piece.get_nodes():
+            node_y_pos = node.get_position()[1]
+            if not node_y_pos in lines_to_check:
+                lines_to_check.append(node_y_pos)
+
+        #searching through each line to see if clearable
+        for line_number in lines_to_check:
+            clearing = True
+            for x in range(constants.WIDTH):
+                if not self._game_nodes.get_node_at_position(x, line_number).is_occupied():
+                    clearing = False
+                    break
+            if clearing:
+                lines_to_clear.append(line_number)
+        
+        #exit if nothing to be cleared
+        if len(lines_to_clear) == 0:
+            self._combo = 0
+            return
+    
+        #TODO: maybe have an animation here
+        t_spin = piece.t_spin
+        piece_shape = piece.get_shape()
+        if t_spin:
+            if len(lines_to_clear) == 1:
+                print(piece_shape.name + "-Spin Single!")
+            elif len(lines_to_clear) == 1:
+                print(piece_shape.name + "-Spin Double!")
+            elif len(lines_to_clear) == 1:
+                print(piece_shape.name + "-Spin Triple!")
+
+        multiplier = 0
+        if len(lines_to_clear) == 1:
+            if t_spin:
+                multiplier = 800
+            else:
+                multiplier = 100
+        elif len(lines_to_clear) == 2:
+            if t_spin:
+                multiplier = 1200
+            else:
+                multiplier = 300
+        elif len(lines_to_clear) == 3:
+            if t_spin:
+                multiplier = 1600
+            else:
+                multiplier = 300
+        elif len(lines_to_clear) == 4:
+            multiplier = 800
+
+        added_score = added_score + multiplier * self._level
+
+        #TODO: back to back logic
+
+        for _ in lines_to_clear:
+            for y in range(constants.HEIGHT):
+                for x in range(constants.WIDTH):
+                    current_node_vector = (x, y)
+                    new_node_vector = (x, y+1)
+                    current_node = self._game_nodes.get_node_at_position(current_node_vector[0], current_node_vector[1])
+                    new_node = self._game_nodes.get_node_at_position(new_node_vector[0], new_node_vector[1])
+                    if new_node and current_node:
+                        current_node.occupy(new_node.get_shape(), False)
+
+        #TODO combo logic
+
+        #TODO level up logic
+    def add_score(self, score_added):
+        self._score += score_added
+        #TODO: display this maybe?
+        print(self._score)
+
+    def set_quick_drop(self, quick_drop):
+        self._quickdrop = quick_drop
+
+    def fast_drop(self):
+        added_score = 0
+        while self._current_piece and self._current_piece.try_move_direction(Direction.DOWN.name):
+            added_score += 2
+        self.add_score(added_score)
+        self._buffer = 0
+        self._harddrop = True
+        self._next_frame = time.time()
 
     def _get_new_piece(self, next_piece_shape=None):
         self._buffer = constants.BUFFER
@@ -114,6 +226,7 @@ class TetrisGame:
     def _reset_holds(self):
         self._left_hold = False
         self._right_hold = False
+        self._quickdrop = False
 
     def release_direction(self, direction):
         self._reset_holds()

@@ -30,7 +30,7 @@ class GameNodes:
         return self._nodes
     
     def get_node_at_position(self, x, y) -> Optional[Node]:
-        if x < 0 or y < 1 or x > WIDTH - 1 or y > HEIGHT - 1:
+        if x < 0 or y < 0 or x > WIDTH - 1 or y > HEIGHT - 1:
             return None
         return self._nodes[x][y]
     

@@ -13,7 +13,7 @@ class Piece:
         self._nodes = []  # Initialize _nodes as an instance variable
         self._rotation = 0
         self._shadow = None
-        self._t_spin = False
+        self.t_spin = False
         self._central_node = None
         self._shadow: Optional[Shadow] = None
         self._prepare_nodes(is_secondary_spawn)
@@ -67,7 +67,7 @@ class Piece:
         for node in self._nodes:
             node.occupy(self._shape, False)
         self._central_node = potential_central_node
-        self._t_spin = False
+        self.t_spin = False
         return True
     
     def _does_contain_node(self, check_node):
@@ -99,7 +99,7 @@ class Piece:
                         if look_at_node == None or look_at_node.is_occupied():
                             filled_corners += 1
                     return filled_corners >= 3
-                self._t_spin = __test_t_spin
+                self.t_spin = __test_t_spin
                 return True
             i+=1
         return False

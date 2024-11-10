@@ -101,6 +101,10 @@ class GameHandler:
     def _process_direction_down(self, input):
         if input == Direction.LEFT.name or input == Direction.RIGHT.name:
             self._game.press_down_direction(input)
+        elif input == Direction.DOWN.name:
+            self._game.set_quick_drop(True)
+        elif input == Direction.UP.name:
+            self._game.fast_drop()
 
     def _process_direction_up(self, input):
         self._game.release_direction(input)

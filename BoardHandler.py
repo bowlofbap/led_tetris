@@ -16,9 +16,12 @@ class BoardHandler:
             self._pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=constants.LED_BRIGHTNESS, auto_write=False,pixel_order=order)
 
     def _draw_pixel(self, x, y, color: Color, shadow: bool):
+        brightness = 1 if not shadow else 0.1
         if (x>=0 and y>=0):
-            #brightness = max(0.0, min(0.4, 1.0))
-            self._pixels[self._get_pixel_from_grid(x,y)] = color._value_
+            r = int(color._value_[0] * brightness)
+            g = int(color._value_[1] * brightness)
+            b = int(color._value_[2] * brightness)
+            self._pixels[self._get_pixel_from_grid(x,y)] = (r, g, b)
 
     #helper to translate the continuous strip into a grid
     #works for following setup

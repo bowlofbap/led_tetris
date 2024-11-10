@@ -14,8 +14,8 @@ class Shadow:
         for node in self._nodes:
             node.occupy(None, False)
             
-    def _does_contain_node(self, check_node):
-        for node in self._nodes:
+    def _does_contain_node(self, nodes, check_node):
+        for node in nodes:
             if node.equals(node, check_node):
                 return True
         return False
@@ -30,7 +30,7 @@ class Shadow:
             for node in nodes:
                 node_position = node.get_position()
                 look_at_node = self._game_nodes.get_node_at_position(node_position[0], node_position[1] - i)
-                if not look_at_node or (not self._does_contain_node(look_at_node) and look_at_node.is_occupied()):
+                if not look_at_node or (not self._does_contain_node(nodes, look_at_node) and look_at_node.is_occupied()):
                     self._nodes = self._set_nodes
                     return True
                 new_nodes.append(look_at_node)
@@ -38,10 +38,10 @@ class Shadow:
             return False
         while not __digging(i):
             i+=1
-            print("not digging")
-        print(i)
+            #print("not digging")
         for node in self._set_nodes:
             node.occupy(self._shape, True)
+            print(node.get_position()[1])
 
     def destroy(self):
         self._clear_nodes()
