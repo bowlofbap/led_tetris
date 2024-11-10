@@ -3,6 +3,7 @@ from Direction import Direction
 from GameNodes import GameNodes
 from Wallkick import Wallkick
 from Node import Node
+from Shadow import Shadow
 from typing import Optional, List
 
 class Piece:
@@ -14,6 +15,7 @@ class Piece:
         self._shadow = None
         self._t_spin = False
         self._central_node = None
+        self._shadow: Optional[Shadow] = None
         self._prepare_nodes(is_secondary_spawn)
 
     def _prepare_nodes(self, is_secondary_spawn):
@@ -32,7 +34,8 @@ class Piece:
     def init_new_piece(self):
         for node in self._nodes:
             node.occupy(self._shape, False)
-        #somethign about the shadow here
+        self._shadow = Shadow(self._shape, self._game_nodes)
+        self._shadow.update(self._nodes)
 
     def get_shape(self):
         return self._shape
@@ -41,6 +44,7 @@ class Piece:
         return self._nodes
     
     def destroy(self):
+        self._shadow.destroy()
         for node in self._nodes:
             node.occupy(None, False)
         
@@ -59,7 +63,7 @@ class Piece:
         for node in self._nodes:
             node.occupy(None, False)
         self._nodes = new_nodes
-        #TODO: update shadow here
+        self._shadow.update(self._nodes)
         for node in self._nodes:
             node.occupy(self._shape, False)
         self._central_node = potential_central_node
@@ -140,7 +144,7 @@ class Piece:
         for node in self._nodes:
             node.occupy(None, False)
         self._nodes = new_nodes
-        #TODO: update the shadow here
+        self._shadow.update(self._nodes)
         for node in self._nodes:
             node.occupy(self._shape, False)
         self._rotation = self.__adjust_rotation(self._rotation + direction_multiplier)
@@ -154,8 +158,7 @@ class Piece:
             r = 0
         return r
 
-
     def solidify(self):
-        #TODO: destroy shadow here
+        self._shadow.destroy()
         for node in self._nodes:
             node.occupy(self._shape, False)
