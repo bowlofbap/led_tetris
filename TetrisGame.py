@@ -150,7 +150,6 @@ class TetrisGame:
 
         #TODO: Fix this 
         lines_to_clear.sort(reverse=True)
-        print(lines_to_clear)
         for y_start in lines_to_clear:
             for y in range(y_start, constants.HEIGHT):
                 for x in range(constants.WIDTH):
