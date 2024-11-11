@@ -1,5 +1,3 @@
-from TetrisGame import TetrisGame
-from typing import Optional
 from Node import Node
 from Color import Color
 import constants

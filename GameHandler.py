@@ -3,7 +3,6 @@ from Direction import Direction
 from ControllerMap import ControllerMap
 from BoardHandler import BoardHandler
 from TetrisGame import TetrisGame
-from typing import Optional
 import pygame
 import math
 import sys
@@ -19,7 +18,7 @@ class GameHandler:
         self._joystick          = None
         self._last_direction    = None
         self._running           = True
-        self._game = game
+        self._game: TetrisGame  = game
         self._debug = debug
         self._board_handler = BoardHandler(game)
 
@@ -117,6 +116,8 @@ class GameHandler:
             self._game.rotate_piece(2)
         elif input == ControllerMap.START.value:
             self._running = False
+        elif input == ControllerMap.SELECT.value:
+            self._game.restart()
         elif input == ControllerMap.X.value:
             self._game.swap_piece()
 

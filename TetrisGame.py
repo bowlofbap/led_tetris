@@ -3,7 +3,6 @@ import constants
 from Direction import Direction
 from typing import Optional, List
 from Bag import Bag
-from Shape import Shape
 from Piece import Piece
 from GameNodes import GameNodes
 
@@ -110,6 +109,12 @@ class TetrisGame:
             return
     
         #TODO: maybe have an animation here
+        for y in lines_to_clear:
+            for x in range(constants.WIDTH):
+                node = self._game_nodes.get_node_at_position(x, y)
+                if node:
+                    node.occupy(None, False)
+
         t_spin = piece.t_spin
         piece_shape = piece.get_shape()
         if t_spin:
@@ -144,8 +149,10 @@ class TetrisGame:
         #TODO: back to back logic
 
         #TODO: Fix this 
-        for _ in lines_to_clear:
-            for y in range(constants.HEIGHT):
+        lines_to_clear.sort(reverse=True)
+        print(lines_to_clear)
+        for y_start in lines_to_clear:
+            for y in range(y_start, constants.HEIGHT):
                 for x in range(constants.WIDTH):
                     current_node_vector = (x, y)
                     new_node_vector = (x, y+1)
