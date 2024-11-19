@@ -1,9 +1,9 @@
-import constants
-from Direction import Direction
-from ControllerMap import ControllerMap
-from BoardHandler import BoardHandler
-from TetrisGame import TetrisGame
-from PreviewHandler import PreviewHandler
+from .constants import BLUETOOTH_DIRECTIONS
+from .Direction import Direction
+from .ControllerMap import ControllerMap
+from .BoardHandler import BoardHandler
+from .TetrisGame import TetrisGame
+from .PreviewHandler import PreviewHandler
 import pygame
 import math
 import sys
@@ -92,7 +92,8 @@ class ControllerHandler:
         elif input == ControllerMap.R.value:
             self._game.rotate_piece(1)
         elif input == ControllerMap.Y.value:
-            self._game.rotate_piece(2)
+            #self._game.rotate_piece(2)
+            print("180 turn not implemented yet")
         elif input == ControllerMap.START.value:
             self._running = False
         elif input == ControllerMap.SELECT.value:
@@ -120,7 +121,7 @@ class ControllerHandler:
         closest_direction = None
         smallest_distance = float('inf')
         
-        for direction, vector in constants.BLUETOOTH_DIRECTIONS.items():
+        for direction, vector in BLUETOOTH_DIRECTIONS.items():
             # Calculate Euclidean distance between input and direction vector
             distance = math.sqrt((raw_input_x - vector['x']) ** 2 + (raw_input_y - vector['y']) ** 2)
             

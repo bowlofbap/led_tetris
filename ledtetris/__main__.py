@@ -1,6 +1,6 @@
+from .ControllerHandler import ControllerHandler
+from .TetrisGame import TetrisGame
 import argparse
-from ControllerHandler import ControllerHandler
-from TetrisGame import TetrisGame
 
 #old way to run the game if you wanna run it manually, go through this file and run game.py
 

@@ -1,7 +1,7 @@
-from Shape import Shape
-from Node import Node
-from typing import Optional, List
-from GameNodes import GameNodes
+from .Shape import Shape
+from .Node import Node
+from .GameNodes import GameNodes
+from typing import Optional
 
 class Shadow:
     def __init__(self, shape: Shape, game_nodes: GameNodes):

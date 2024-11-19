@@ -1,5 +1,5 @@
 from enum import Enum
-from Color import Color
+from .Color import Color
 
 class Shape(Enum):
     O = ([(0, 0), (-1, 0), (0, -1), (-1, -1)], Color.YELLOW,

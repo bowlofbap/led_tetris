@@ -1,9 +1,9 @@
-from Shape import Shape
-from Direction import Direction
-from GameNodes import GameNodes
-from Wallkick import Wallkick
-from Node import Node
-from Shadow import Shadow
+from .Shape import Shape
+from .Direction import Direction
+from .GameNodes import GameNodes
+from .Wallkick import Wallkick
+from .Node import Node
+from .Shadow import Shadow
 from typing import Optional, List
 
 class Piece:

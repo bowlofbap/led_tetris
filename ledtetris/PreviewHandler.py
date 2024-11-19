@@ -3,8 +3,8 @@ from luma.core.interface.serial import spi
 from luma.core.render import canvas
 from luma.core.legacy import text, show_message
 from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT, SINCLAIR_FONT, LCD_FONT
-from TetrisGame import TetrisGame
-from Shape import Shape
+from .TetrisGame import TetrisGame
+from .Shape import Shape
 from typing import List, Optional
 
 class PreviewHandler:

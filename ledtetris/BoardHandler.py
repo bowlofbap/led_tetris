@@ -1,17 +1,17 @@
-from Node import Node
-from Color import Color
-import constants
+from .Node import Node
+from .Color import Color
+from .constants import *
 
 class BoardHandler:
 
     def __init__(self, game):
         self._game = game
-        if constants.PI:
+        if PI:
             import neopixel, board
             pixel_pin = board.D18
-            num_pixels = constants.WIDTH * constants.HEIGHT
+            num_pixels = WIDTH * HEIGHT
             order = neopixel.GRB
-            self._pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=constants.LED_BRIGHTNESS, auto_write=False,pixel_order=order)
+            self._pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=LED_BRIGHTNESS, auto_write=False,pixel_order=order)
 
     def _draw_pixel(self, x, y, color: Color, shadow: bool):
         brightness = 1 if not shadow else 0.1
@@ -31,8 +31,8 @@ class BoardHandler:
 
     def _get_pixel_from_grid(self, x, y):
         if (x%2 == 0):
-            y = constants.HEIGHT - y - 1
-        return constants.HEIGHT*(constants.WIDTH - x - 1) + y
+            y = HEIGHT - y - 1
+        return HEIGHT*(WIDTH - x - 1) + y
 
     #blank the screen
     def clear(self):

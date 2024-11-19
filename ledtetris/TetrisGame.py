@@ -1,10 +1,10 @@
-import time
-import constants
-from Direction import Direction
+from .constants import *
+from .Direction import Direction
+from .Bag import Bag
+from .Piece import Piece
+from .GameNodes import GameNodes
 from typing import Optional, List
-from Bag import Bag
-from Piece import Piece
-from GameNodes import GameNodes
+import time
 
 class TetrisGame:
 
@@ -13,10 +13,10 @@ class TetrisGame:
         self._right_hold = False
         self._left_delay = time.time()
         self._right_delay = time.time()
-        self._hold_delay = constants.HOLD_DELAY
-        self._hold_interval = constants.HOLD_INTERVAL
+        self._hold_delay = HOLD_DELAY
+        self._hold_interval = HOLD_INTERVAL
         self._next_hold_tick = time.time()
-        self._buffer = constants.BUFFER
+        self._buffer = BUFFER
         self._current_piece: Optional[Piece] = None
         self._game_nodes: Optional[GameNodes] = None
         self._bag: Optional[Bag] = None
@@ -25,7 +25,7 @@ class TetrisGame:
         self._next_frame = time.time()
         self._harddrop = False
 
-        self._speed = constants.INITIAL_SPEED
+        self._speed = INITIAL_SPEED
         self._lines_cleared = 0
         self._level = 0
         self._score = 0
@@ -58,7 +58,7 @@ class TetrisGame:
 
         #dropping logic
         if tick >= self._next_frame or self._quickdrop:
-            self._next_frame = time.time() + (self._speed - (0.47 * self._level / constants.MAX_LEVEL))
+            self._next_frame = time.time() + (self._speed - (0.47 * self._level / MAX_LEVEL))
             if not self.move_piece(Direction.DOWN.name):
                 if self._buffer <= 0 or not self._current_piece:
                     if self._harddrop:
@@ -96,7 +96,7 @@ class TetrisGame:
         #searching through each line to see if clearable
         for line_number in lines_to_check:
             clearing = True
-            for x in range(constants.WIDTH):
+            for x in range(WIDTH):
                 if not self._game_nodes.get_node_at_position(x, line_number).is_occupied():
                     clearing = False
                     break
@@ -110,7 +110,7 @@ class TetrisGame:
     
         #TODO: maybe have an animation here
         for y in lines_to_clear:
-            for x in range(constants.WIDTH):
+            for x in range(WIDTH):
                 node = self._game_nodes.get_node_at_position(x, y)
                 if node:
                     node.occupy(None, False)
@@ -151,8 +151,8 @@ class TetrisGame:
         #TODO: Fix this 
         lines_to_clear.sort(reverse=True)
         for y_start in lines_to_clear:
-            for y in range(y_start, constants.HEIGHT):
-                for x in range(constants.WIDTH):
+            for y in range(y_start, HEIGHT):
+                for x in range(WIDTH):
                     current_node_vector = (x, y)
                     new_node_vector = (x, y+1)
                     current_node = self._game_nodes.get_node_at_position(current_node_vector[0], current_node_vector[1])
@@ -182,7 +182,7 @@ class TetrisGame:
         self._next_frame = time.time()
 
     def _get_new_piece(self, next_piece_shape=None):
-        self._buffer = constants.BUFFER
+        self._buffer = BUFFER
         self._rotations = 0
         if not self._current_piece:
             if not next_piece_shape:
@@ -207,8 +207,8 @@ class TetrisGame:
         if self._current_piece:
             success = self._current_piece.try_rotation_angle(direction_multiplier) if direction_multiplier != 2 else self._current_piece.try_rotate_180()
             if success:
-                if self._rotations < constants.MAX_ROTATIONS:
-                    self._buffer = constants.BUFFER
+                if self._rotations < MAX_ROTATIONS:
+                    self._buffer = BUFFER
                     self._rotations += 1
                 return True
         return False
@@ -249,7 +249,7 @@ class TetrisGame:
         return self._bag
 
     def _reset_stats(self):
-        self._speed = constants.INITIAL_SPEED
+        self._speed = INITIAL_SPEED
         self._lines_cleared = 0
         self._level = 0
         self._score = 0

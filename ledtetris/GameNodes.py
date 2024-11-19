@@ -1,5 +1,5 @@
-from Node import Node
-from constants import HEIGHT, WIDTH
+from .Node import Node
+from .constants import HEIGHT, WIDTH
 from typing import List, Optional
 
 class GameNodes:

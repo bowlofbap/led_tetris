@@ -1,6 +1,6 @@
-from typing import Optional, List
-from Shape import Shape
+from .Shape import Shape
 import random
+from typing import Optional, List
 
 class Bag:
 

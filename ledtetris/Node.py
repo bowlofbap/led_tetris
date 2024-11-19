@@ -1,4 +1,4 @@
-from Shape import Shape
+from .Shape import Shape
 
 class Node:
     
