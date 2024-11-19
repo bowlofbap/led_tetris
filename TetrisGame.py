@@ -42,7 +42,7 @@ class TetrisGame:
         self._right_hold = False
         self._quickdrop = False 
         self._current_piece = None
-        self._is_running = False
+        self._is_running = True
         self._reset_stats()
     
     def run(self):
@@ -62,16 +62,16 @@ class TetrisGame:
             if not self.move_piece(Direction.DOWN.name):
                 if self._buffer <= 0 or not self._current_piece:
                     if self._harddrop:
-                        print("HardDrop")
+                        "Hard Dropped"
                     else:
-                        print("SoftDrop")
+                        "Soft Dropped"
                     self._harddrop = False
                     if self._current_piece: 
                         self._current_piece.solidify()
                     self.check_lines(self._current_piece)
                     self._current_piece = None
                     if not self._get_new_piece():
-                        print("Lost Game!")
+                        self._is_running = False
                     self._bag.reset_swappable()
                 else:
                     self._quickdrop = False
@@ -167,7 +167,7 @@ class TetrisGame:
     def add_score(self, score_added):
         self._score += score_added
         #TODO: display this maybe?
-        print("SCORE: ", self._score)
+        #print("SCORE: ", self._score)
 
     def set_quick_drop(self, quick_drop):
         self._quickdrop = quick_drop
@@ -214,14 +214,14 @@ class TetrisGame:
         return False
     
     def swap_piece(self):
+        empty_swap = self._bag.peek_swap_piece() is None
         new_piece_shape = self._bag.replace_swap_piece(self._current_piece._shape)
         #current_shape = self._current_piece.get_shape() only needed up to update the bag graphic
         if new_piece_shape != self._current_piece:
-            if new_piece_shape:
-                print(new_piece_shape)
-            self._current_piece.destroy()
-            self._current_piece = None
-            self._get_new_piece(new_piece_shape)
+            if new_piece_shape or empty_swap:
+                self._current_piece.destroy()
+                self._current_piece = None
+                self._get_new_piece(new_piece_shape)
             #update bag graphic if you have this
             #update movement tick?? maybe
 
@@ -244,6 +244,9 @@ class TetrisGame:
 
     def get_game_nodes(self):
         return self._game_nodes
+    
+    def get_bag(self):
+        return self._bag
 
     def _reset_stats(self):
         self._speed = constants.INITIAL_SPEED

@@ -17,6 +17,9 @@ class Bag:
         for piece in temp_bag:
             self._current_pieces.append(piece)
 
+    def peek_swap_piece(self):
+        return self._held_piece_shape
+
     def replace_swap_piece(self, new_piece_shape):
         if not self._can_swap: return False
         original_bag_piece = self._held_piece_shape
@@ -32,3 +35,6 @@ class Bag:
             self._add_another_bag()
         next_piece = self._current_pieces.pop(0)
         return next_piece
+    
+    def get_all_pieces(self):
+        return self._current_pieces

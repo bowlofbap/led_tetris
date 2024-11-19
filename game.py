@@ -1,15 +1,12 @@
-
-import sys
-sys.path.insert(0, '/home/pi/LedTetris')
 import argparse
-from GameHandler import GameHandler
+from ControllerHandler import ControllerHandler
 from TetrisGame import TetrisGame
 
 #old way to run the game if you wanna run it manually, go through this file and run game.py
 
 def run_game(debug):
     tetrisGame = TetrisGame()
-    gameHandler = GameHandler(tetrisGame, debug = debug)
+    gameHandler = ControllerHandler(tetrisGame, debug = debug)
 
     try:
         gameHandler.start()
