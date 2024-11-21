@@ -110,7 +110,6 @@ class ControllerHandler:
 
     def _convert_bt_to_direction_and_motion(self, raw_input_x, raw_input_y):
         # Handle release state
-        print(raw_input_y)
         if abs(raw_input_y) <= 0.1:
             # Return the last known direction for button release
             #potentially throwing error somehow if up is handled before a down press? maybe throw
