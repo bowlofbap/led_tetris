@@ -35,7 +35,6 @@ class PreviewHandler:
                             value = shape.bit_map[b_y][b_x]
                             if value == 1:
                                 draw.point((x, y), fill="white")
-
             draw_held_piece(held_piece)
             for i in range(3):
                 shape = next_pieces[i]

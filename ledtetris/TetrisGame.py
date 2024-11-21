@@ -120,9 +120,9 @@ class TetrisGame:
         if t_spin:
             if len(lines_to_clear) == 1:
                 print(piece_shape.name + "-Spin Single!")
-            elif len(lines_to_clear) == 1:
+            elif len(lines_to_clear) == 2:
                 print(piece_shape.name + "-Spin Double!")
-            elif len(lines_to_clear) == 1:
+            elif len(lines_to_clear) == 3:
                 print(piece_shape.name + "-Spin Triple!")
 
         multiplier = 0
@@ -160,10 +160,24 @@ class TetrisGame:
                     if new_node and current_node:
                         current_node.occupy(new_node.get_shape(), False)
 
+        #combo logic
+        self._combo += 1
+        if self._combo > 1:
+            added_score += 50 * self._combo * self._level
+        if self._combo > 2:
+            print(str(self._combo) + " Combo!")
 
-        #TODO combo logic
+        #TODO: add logic for allclear
 
-        #TODO level up logic
+        #level up logic
+        self._lines_cleared += len(lines_to_clear)
+        if self._lines_cleared >= LINES_PER_LEVEL and self._level < MAX_LEVEL:
+            self._lines_cleared -= LINES_PER_LEVEL
+            self._level += 1
+            print("Leveled up to " + str(self._level))
+        self.add_score(added_score)
+
+
     def add_score(self, score_added):
         self._score += score_added
         #TODO: display this maybe?
