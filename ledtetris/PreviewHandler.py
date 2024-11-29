@@ -14,6 +14,9 @@ class PreviewHandler:
         serial = spi(port=0, device=0, gpio_noop=True)
         self._device = max7219(serial, cascaded=4, blocks_arranged_in_reverse_order=True)
 
+    def show_text(self, text):
+        show_message(self._device,text,fill="white", font=proportional(CP437_FONT), scroll_delay=0.03)
+
     def update(self):
         next_pieces: List[Shape] = self._tetris_game.get_bag().get_all_pieces()[:3]
         held_piece: Optional[Shape] = self._tetris_game.get_bag().peek_swap_piece()

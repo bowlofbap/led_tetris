@@ -32,6 +32,7 @@ class ControllerHandler:
         joystick_detected = False
         while joystick_detected==False:
             print("Waiting for controller...")
+            self._preview_handler.show_text("Waiting for controller...")
             pygame.joystick.quit()
             pygame.joystick.init()
             try:
