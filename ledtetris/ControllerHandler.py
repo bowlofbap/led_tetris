@@ -32,7 +32,6 @@ class ControllerHandler:
         joystick_detected = False
         while joystick_detected==False:
             print("Waiting for controller...")
-            self._preview_handler.show_text("Waiting for controller...")
             pygame.joystick.quit()
             pygame.joystick.init()
             try:
@@ -41,9 +40,9 @@ class ControllerHandler:
                 self._joystick = joystick
                 joystick_detected = True
                 print("controller found")
-
             except pygame.error:
                 print("not enough joystick found.")
+                self._preview_handler.show_text("Waiting for controller...")
                 joystick_detected = False
         self.loop()
 
